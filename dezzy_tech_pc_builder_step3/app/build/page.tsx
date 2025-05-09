@@ -8,7 +8,7 @@ const mockComponents = {
   psu: ['550W Bronze', '750W Gold']
 }
 
-const prices = {
+const prices: Record<string, number> = {
   'Ryzen 5 5600X': 160,
   'Intel i5-12400F': 150,
   'RTX 3060': 330,
@@ -20,10 +20,13 @@ const prices = {
 }
 
 export default function BuildPage() {
-  const [selected, setSelected] = useState({})
-  const total = Object.values(selected).reduce((sum, item) => sum + (prices[item] || 0), 0)
+  const [selected, setSelected] = useState<Record<string, string>>({})
 
-  function handleSelect(category, part) {
+  const total = Object.values(selected).reduce((sum, item) => {
+    return sum + (prices[item] || 0)
+  }, 0)
+
+  function handleSelect(category: string, part: string) {
     setSelected(prev => ({ ...prev, [category]: part }))
   }
 
@@ -45,7 +48,8 @@ export default function BuildPage() {
           </select>
         </div>
       ))}
-      <div className="mt-6 text-xl font-bold">Total Price: ${total}</div>
+      <div className="mt-6 text-xl font-bold">Total Price: ${total.toFixed(2)}</div>
     </div>
   )
 }
+
